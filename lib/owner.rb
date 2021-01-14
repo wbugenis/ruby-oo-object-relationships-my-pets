@@ -1,6 +1,6 @@
 require_relative 'cat'
 require_relative 'dog'
-
+require 'pry'
 class Owner
   
   attr_reader :name, :species
@@ -30,29 +30,38 @@ class Owner
   end
 
   def cats
-    Cats.all
+    Cat.all.select {|cat| cat.owner == self} 
   end
 
   def dogs
-    Dogs.all
+    Dog.all.select {|dog| dog.owner == self} 
   end
 
-  def buy_cat
-
+  def buy_cat(name)
+    Cat.new(name,self)
   end
 
-  def buy_dog
+  def buy_dog(name)
+    Dog.new(name,self)
   end
 
   def walk_dogs
+    Dog.all.select {|dog| dog.mood = "happy"}
   end
 
   def feed_cats
+    Cat.all.select {|cat| cat.mood = "happy"}
   end
 
   def sell_pets
+    Dog.all.each {|dog| dog.mood = "nervous" 
+    dog.owner =nil}
+    Cat.all.each {|cat| cat.mood = "nervous" 
+    cat.owner =nil}
+
   end
 
   def list_pets
+    "I have #{self.dogs.count} dog(s), and #{self.cats.count} cat(s)."
   end
 end
